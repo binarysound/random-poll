@@ -29,9 +29,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 db = SQLAlchemy(app)
 
 app_config = config["app"]
-port = 7654
+host = "0.0.0.0"
+port = 80
 
 if app_config:
+    if app_config["host"]:
+        host = app_config["host"]
     if app_config["port"]:
         port = app_config["port"]
 
@@ -52,4 +55,4 @@ def hello():
     return "Hello world!"
 
 if __name__ == "__main__":
-    app.run(port=port)
+    app.run(host=host, port=port)
