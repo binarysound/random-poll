@@ -1,4 +1,3 @@
-import configparser
 import random
 import string
 from optparse import OptionParser
@@ -6,38 +5,44 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 parser = OptionParser()
-parser.add_option("-c", "--config", dest="config", help="configuration file")
+parser.add_option("-e", "--env", dest="env", help="environment configuration file")
 
 (options, _) = parser.parse_args()
 
-config_file = options.config if options.config else "dev.cfg"
+env_file = options.env if options.env else ".env"
 
-config = configparser.ConfigParser()
-config.read(config_file)
+class EnvParser(object):
+    def __init__(self):
+        pass
 
-db_config = config["database"]
+    def parse(self, env_file):
+        env = {}
+        with open(env_file, "r") as f:
+            for line in f:
+                if line[0] == "#": pass  # This is comment line
+                parsed = line.strip().split("=")
+                if len(parsed) != 2:
+                    print("Ill-formed .env file")
+                    exit(1)
+                env[parsed[0]] = parsed[1]
+        return env
+
+env_parser = EnvParser()
+env = env_parser.parse(env_file)
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     "postgresql://%s:%s@%s/%s" % (
-        db_config["user"],
-        db_config["password"],
-        db_config["host"],
-        db_config["database"]
+        "postgres",
+        env["DB_PASSWORD"],
+        "postgres",
+        "postgres"
     )
 )
 db = SQLAlchemy(app)
 
-app_config = config["app"]
 host = "0.0.0.0"
 port = 80
-
-if app_config:
-    if app_config["host"]:
-        host = app_config["host"]
-    if app_config["port"]:
-        port = app_config["port"]
-
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -7,7 +7,7 @@
 - [Docker Compose](https://docs.docker.com/compose/install/) >= 1.11.2
 
 ### Environment Setup
-`./docs/example.env`와 `./docs/example.dev.cfg`를 참고해 `.env`와 `dev.cfg`를 프로젝트 루트에 생성합니다.
+`./docs/example.env`를 참고해 `.env`를 프로젝트 루트에 생성합니다.
 
 ### Running
 ```bash
