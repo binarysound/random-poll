@@ -52,7 +52,18 @@ class Question(db.Model):
 
 @app.route("/")
 def hello():
-    return "Hello world!"
+    num_questions = db.session.query(Question).count()
+    return "Number of questions: %s" % num_questions
+
+@app.route("/question")
+def new_question():
+    new_string = ''.join(random.choices(string.ascii_uppercase, k=10))
+    question = Question(new_string)
+    db.session.add(question)
+    db.session.commit()
+    return "New question: %s" % new_string
 
 if __name__ == "__main__":
-    app.run(host=host, port=port)
+    # Database initialization; this should be placed somewhere else later
+    db.create_all()
+    app.run(host=host, port=int(port))
