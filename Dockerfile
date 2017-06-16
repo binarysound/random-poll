@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 80
 
-CMD ["python", "-u", "main.py"]
+CMD ["python", "-u", "manage.py", "run"]
