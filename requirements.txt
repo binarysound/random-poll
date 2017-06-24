@@ -2,3 +2,4 @@ Flask==0.12.2
 psycopg2==2.7.1
 SQLAlchemy==1.1.10
 Flask-SQLAlchemy==2.2
+pylint==1.7.1
